@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Bouncing Ball (HTML5)</title>
+
+    <script>
+
+        var MIN_X = 0;
+        var MIN_Y = 0;
+
+        var WIDTH = 520;
+        var HEIGHT = 410;
+
+        var MAX_X = MIN_X + WIDTH - 1;
+        var MAX_Y = MIN_Y + HEIGHT - 1;
+
+        var ballRadius = 30;
+        var ballSize = ballRadius * 2 + 1;
+
+        // Randomly place the initial ball inside the canvas
+        var ballCenterX = (WIDTH - 2 * ballSize) * Math.random() + (MIN_X + ballSize);
+        var ballCenterY = (HEIGHT - 2 * ballSize) * Math.random() + (MIN_Y + ballSize);
+
+        // Initial speed
+        var ballSpeedX = 5;
+        var ballSpeedY = 3;
+
+        var context;
+
+        // Initial ball color
+        var ballColor = "#FF0000";
+
+        function init() {
+
+            var canvas = document.getElementById("box");
+
+            canvas.width = WIDTH;
+            canvas.height = HEIGHT;
+            canvas.style.border = "1px solid";
+
+            context = canvas.getContext("2d");
+
+            setInterval(draw, 30);
+        }
+
+        // Generate a random RGB color
+        function randomColor() {
+
+            var x = Math.floor(Math.random() * 256);
+            var y = Math.floor(Math.random() * 256);
+            var z = Math.floor(Math.random() * 256);
+
+            return "rgb(" + x + "," + y + "," + z + ")";
+        }
+
+        // Draw and animate the ball
+        function draw() {
+
+            // Update position
+            ballCenterX += ballSpeedX;
+            ballCenterY += ballSpeedY;
+
+            // Left wall
+            if (ballCenterX - ballRadius < MIN_X) {
+
+                ballSpeedX = -ballSpeedX;
+                ballCenterX = MIN_X + ballRadius;
+                ballColor = randomColor();
+
+            }
+
+            // Right wall
+            else if (ballCenterX + ballRadius > MAX_X) {
+
+                ballSpeedX = -ballSpeedX;
+                ballCenterX = MAX_X - ballRadius;
+                ballColor = randomColor();
+            }
+
+            // Top wall
+            if (ballCenterY - ballRadius < MIN_Y) {
+
+                ballSpeedY = -ballSpeedY;
+                ballCenterY = MIN_Y + ballRadius;
+                ballColor = randomColor();
+
+            }
+
+            // Bottom wall
+            else if (ballCenterY + ballRadius > MAX_Y) {
+
+                ballSpeedY = -ballSpeedY;
+                ballCenterY = MAX_Y - ballRadius;
+                ballColor = randomColor();
+            }
+
+            context.clearRect(MIN_X, MIN_Y, MAX_X, MAX_Y);
+
+            context.fillStyle = ballColor;
+
+            context.beginPath();
+
+            context.arc(
+                ballCenterX,
+                ballCenterY,
+                ballRadius,
+                0,
+                Math.PI * 2,
+                true
+            );
+
+            context.closePath();
+            context.fill();
+        }
+
+        window.addEventListener("load", init, true);
+
+    </script>
+
+</head>
+
+<body>
+
+    <section>
+
+        <h2>Bouncing Ball (HTML5 Canvas)</h2>
+
+        <canvas id="box">
+            Canvas not supported
+        </canvas>
+
+    </section>
+
+</body>
+
+</html>
